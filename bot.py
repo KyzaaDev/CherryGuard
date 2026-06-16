@@ -24,6 +24,10 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def halo(ctx):
     await ctx.send(f"hallo {ctx.author.mention}!")
 
+@bot.command()
+async def dm(ctx, target: discord.Member, *, message):
+    await target.send(f"Testing message from {ctx.author.name}: {message}")
+
 # def def biasa
 async def give_role(member: discord.Member):
     role = discord.utils.get(member.guild.roles, id=1368739571898122382)
@@ -49,7 +53,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
-    CHANNEL_TESTING = bot.get_channel(1516257116078342255)
+    CHANNEL_TESTING = bot.get_channel(1516429156982853682)
     avatar_url = member.display_avatar.url
     username = member.name
     member_count = member.guild.member_count
