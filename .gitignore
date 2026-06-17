@@ -1,1 +1,3 @@
 .env
+BLOCK_NAME.txt
+__pycache__
