@@ -32,7 +32,6 @@ async def dm(ctx, target: discord.Member, *, message):
 async def give_role(member: discord.Member):
     role = discord.utils.get(member.guild.roles, id=1368739571898122382)
     await member.add_roles(role)
-    return
 
 # untuk bagian event
 @bot.event
@@ -48,7 +47,7 @@ async def on_member_join(member):
                 raw_image = await response.read()
                 gambar_file = io.BytesIO(raw_image)
 
-                await CHANNEL_TESTING.send(f"Wel wel kam kam welkam {member.mention}", file=discord.File(gambar_file, filename="testing.png"))
+                await CHANNEL_TESTING.send(f"Wel wel kam kam welkam {member.mention}", file=discord.File(gambar_file, filename="testing.png"))            
                 await give_role(member)
 
 @bot.event
