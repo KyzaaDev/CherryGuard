@@ -25,7 +25,31 @@ async def setup_hook():
                 print(f"Berhasil memuat cogs: {cog[:-3]}")
             except Exception as e:
                 print(f"Gagal memuat cogs: {e}")
-    print("Berhasil memuat semua cogs!")            
+    print("Berhasil memuat semua cogs!")   
+
+@bot.event
+async def on_command_error(ctx, error):
+    app_info = await bot.application_info()
+    owner = app_info.owner
+
+    if isinstance(error, commands.NotOwner):
+        await ctx.send(f"Maaf bang ownernya {owner.mention}")
+
+#  sync slash commands
+@bot.command()
+@commands.is_owner()
+async def sync(ctx):
+    guild = ctx.guild
+
+    await ctx.send(f"Memulai sync server: {guild.name}")
+
+    try:
+        bot.tree.copy_global_to(guild=guild)
+        synced = await bot.tree.sync(guild=guild)
+
+        await ctx.send(f"Berhasil sync {len(synced)} command slash!")
+    except Exception as e:
+        await ctx.send(f"Gagal sync slash command: {e}")
 
 bot.setup_hook = setup_hook
 bot.run(os.getenv("DISCORD_TOKEN"))    
