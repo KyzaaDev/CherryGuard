@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+from datetime import datetime 
 
 class Basic(commands.Cog):
     def __init__(self, bot):
@@ -20,6 +21,23 @@ class Basic(commands.Cog):
         else:
             await interaction.response.send_message(f"{pesan} {target.mention}")
 
+    @app_commands.command(name="profile", description="Melihat profile kamu ataupun temanmu!")
+    @app_commands.guild_only()
+    async def profile(self, interaction: discord.Interaction, member: discord.Member | None = None):
+        user = member if member is not None else interaction.user
+        embed_profile = discord.Embed(
+            title=f"{user.name} Profile",
+            color=user.color
+        )
+        
+        embed_profile.description = f" **Informasi Member {user.mention}**"
+        embed_profile.add_field(name="User ID", value=f"`{user.id}`")
+        embed_profile.set_thumbnail(url=user.avatar.url)
+
+        embed_profile.set_footer(text=f"{self.bot.user.name} © 2026", icon_url=self.bot.user.avatar.url)
+        embed_profile.add_field(name="\u200b", value="\u200b", inline=True)
+
+        await interaction.response.send_message(embed=embed_profile)
         
 async def setup(bot):
     await bot.add_cog(Basic(bot))

@@ -21,8 +21,5 @@ class Moderation(commands.Cog):
             await interaction.response.send_message(f"Command ini hanya bisa digunakan oleh {interaction.guild.owner.mention}!")
         else:
             await self.timeout_member(interaction=interaction, member = member, reason=reason, time=waktu)
-                
-
-
 async def setup(bot):
     await bot.add_cog(Moderation(bot=bot))
