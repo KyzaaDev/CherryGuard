@@ -11,13 +11,11 @@ class Moderation(commands.Cog):
         pesan = f"{member.mention} terkena timeout selama {time} oleh {interaction.user.mention} "
         if reason is not None:
             pesan += f"karena {reason}"
-        
         await member.timeout(timedelta(minutes=time), reason=pesan)
         await interaction.response.send_message(pesan)
 
     @app_commands.command(name="timeout", description="Memberikan timeout kepada member (hanya admin)!")
     async def timeout(self, interaction: discord.Interaction, member: discord.Member, waktu: int, reason: str | None=None):
-        
         if interaction.user.get_role(1368738665165226096) not in interaction.user.roles:
             await interaction.response.send_message(f"Command ini hanya bisa digunakan oleh {interaction.guild.owner.mention}!")
         else:
