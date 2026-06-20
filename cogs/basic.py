@@ -36,7 +36,7 @@ class Basic(commands.Cog):
 
         embed_profile.description = f" **Informasi Member {user.mention}**"
         embed_profile.add_field(name="User ID", value=f"`{user.id}`", inline=False)
-        embed_profile.set_thumbnail(url=user.avatar.url)
+        embed_profile.set_thumbnail(url=user.display_avatar)
 
         embed_profile.set_footer(text=f"{self.bot.user.name} © 2026", icon_url=self.bot.user.avatar.url)
 
