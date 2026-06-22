@@ -25,12 +25,12 @@ class Automod(commands.Cog):
                     if message.guild.get_role(1368738665165226096) in message.author.roles:
                         pass
                     else:
-                        await self.timeout_kword(message = message)
+                        await self.timeout_kword(message = message, blocked_words = kata_blockir)
                 except discord.Forbidden:
                     print(f"Tidak bisa menghapus pesan {message.author.name}")
 
     # function broadCast Moderation Log
-    async def broadcast_timeout(self, message: discord.Message):
+    async def broadcast_timeout(self, message: discord.Message, blocked_words: str):
         BROADCAST_CHANNEL = self.bot.get_channel(1517911475707052215)
         
         if BROADCAST_CHANNEL:
@@ -47,10 +47,13 @@ class Automod(commands.Cog):
             embed_warn.add_field(name="Penindak", value=self.bot.user.mention, inline=False)
             embed_warn.add_field(name="Durasi", value="1 Menit", inline=False)
             embed_warn.add_field(name="Alasan", value="Ngapain coba tadi?", inline=False)
+            embed_warn.add_field(name="Kata diblokir", value=f"`{blocked_words}`", inline=True)
+            embed_warn.add_field(name="Bukti pesan", value=f"`{message.content}`")
+            embed_warn.set_thumbnail(url=message.author.display_avatar.url)
             await BROADCAST_CHANNEL.send(embed = embed_warn)
 
     # function timeout karena K word
-    async def timeout_kword(self, message: discord.Message):
+    async def timeout_kword(self, message: discord.Message, blocked_words: str):
 
         reason = "Stop ngetik K-Word yah!"
         message_author = message
@@ -59,8 +62,8 @@ class Automod(commands.Cog):
         await message.author.timeout(datetime.timedelta(minutes=1), reason=reason)
         await message.channel.send("https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2t0aTZvanA3cm1wdnFzNzFqZGlmbnJ5dDlzb2g2dTJwZXc2OWh5dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jaPdCoXpjnI8BLZGwv/giphy.gif")
         await asyncio.sleep(0.1)
-        await message.channel.send(f"{message_author.author.mention} tolong ketikannya lebih dijaga ya!")
-        await self.broadcast_timeout(message=message_author)
+        await message.channel.send(f"{message_author.mention} tolong ketikannya lebih dijaga ya!")
+        await self.broadcast_timeout(message=message_author, blocked_words=blocked_words)
 
 async def setup(bot):
     await bot.add_cog(Automod(bot))

@@ -17,7 +17,6 @@ class Moderation(commands.Cog):
                 description=f"Maaf yah ditime out {member.mention}",
                 color=discord.Color.from_str("#ff0000")
             )        
-
             # ini ingfo akurat ini ingfo
             embed_warn.add_field(name="User terhukum", value=member.mention, inline=True)
             embed_warn.add_field(name="Penindak", value=interaction.user.mention, inline=False)
