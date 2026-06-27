@@ -16,7 +16,7 @@ class Welcome(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         avatar_url = member.display_avatar.url
-        welcome_channel = self.bot.get_channel(1516429156982853682)
+        welcome_channel = discord.utils.get(member.guild.text_channels, name="👋welcome-goodbye")
         username = member.name
         generate_image = f"https://api.popcat.xyz/v2/welcomecard?background=https://www.image2url.com/r2/default/images/1781607789319-903d026c-ca07-4c31-b3dd-b31a2adf8d9d.png&text1={username}&text2=Welcome%20di%20selamat%20datang&text3=Semoga%20betah%20mereun&avatar={avatar_url}"
 
@@ -25,8 +25,8 @@ class Welcome(commands.Cog):
                 if response_image.status == 200:
                     file_raw = await response_image.read()
                     data_image = io.BytesIO(file_raw)
-
-                    if welcome_channel:
+                
+                    if welcome_channel and welcome_channel.permissions_for(member.guild.me).send_messages:
                         await welcome_channel.send(f"Wel wel kam kam welkam {member.mention}....", file=discord.File(data_image, filename="welcome.png"))
                         await self.give_role(member)
                     else:
@@ -36,7 +36,7 @@ class Welcome(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         avatar_url = member.display_avatar.url
-        welcome_channel = self.bot.get_channel(1516429156982853682)
+        welcome_channel = discord.utils.get(member.guild.text_channels, name="👋welcome-goodbye")
         username = member.name
         generate_image = f"https://api.popcat.xyz/v2/welcomecard?background=https://www.image2url.com/r2/default/images/1781607789319-903d026c-ca07-4c31-b3dd-b31a2adf8d9d.png&text1={username}&text2=Selamat%20goodbye&text3=ga%20betah%20ceunah&avatar={avatar_url}"
 
@@ -46,7 +46,7 @@ class Welcome(commands.Cog):
                     file_raw = await response_image.read()
                     data_image = io.BytesIO(file_raw)
 
-                    if welcome_channel:
+                    if welcome_channel and welcome_channel.permissions_for(member.guild.me).send_messages:
                         await welcome_channel.send(f"Yahh masa keluar lee {member.mention}....", file=discord.File(data_image, filename="welcome.png"))
                     else:
                         pass
